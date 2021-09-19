@@ -10,9 +10,10 @@ LIBS=-lm
 _DEPS = *.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o
+_OBJ = main.o matrix.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
+debug: CFLAGS += -DDEBUG -g
+debug: hill-cipher
 
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
