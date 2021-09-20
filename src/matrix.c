@@ -1,7 +1,13 @@
 #include <matrix.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+/**
+ * @brief Take two 3x3 matricies and add them
+ * 
+ * @param matrix1 
+ * @param matrix2 
+ * @return int** 
+ */
 int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
     int* value = calloc(3, sizeof(int));
     int** rows = malloc(3*sizeof(value));
@@ -16,6 +22,13 @@ int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
     return rows;
 }
 
+/**
+ * @brief take two 3x3 matricies and subtract them
+ * 
+ * @param matrix1 
+ * @param matrix2 
+ * @return int** 
+ */
 int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
     int* value = calloc(3, sizeof(int));
     int** rows = malloc(3*sizeof(value));
@@ -29,6 +42,13 @@ int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
     }
     return rows;
 }
+/**
+ * @brief take two 3x3 matricies and multiply them
+ * 
+ * @param matrix1 
+ * @param matrix2 
+ * @return int** 
+ */
 int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
     int* value = calloc(3, sizeof(int));
     int** rows = malloc(3*sizeof(value));
@@ -47,6 +67,13 @@ int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
     }
     return rows;
 }
+/**
+ * @brief take a matrix and mod by the mod
+ * 
+ * @param matrix 
+ * @param mod 
+ * @return int** 
+ */
 int ** mod_matrix(int matrix[3][3], int mod){
     int* value = calloc(3, sizeof(int));
     int** rows = malloc(3*sizeof(value));
@@ -63,7 +90,11 @@ int ** mod_matrix(int matrix[3][3], int mod){
     return rows;
 }
 
-//take a 3x3 matrix as input
+/**
+ * @brief print the matrix (3x3)
+ * 
+ * @param matrix 
+ */
 void print_matrix(int ** matrix){
     printf("{");
     for(int i = 0; i < 3; i++){
