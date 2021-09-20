@@ -13,5 +13,7 @@ int main(int argc, char const *argv[])
     print_matrix(matrix_result);
     matrix_result = sub_matrix(matrix,matrix2);
     print_matrix(matrix_result);
+    matrix_result = mul_matrix(matrix,matrix2);
+    print_matrix(matrix_result);
     return 0;
 }

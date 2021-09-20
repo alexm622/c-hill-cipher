@@ -7,7 +7,7 @@ int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
     int** rows = malloc(3*sizeof(value));
     printf("adding matricies\n");
     for(int i = 0; i < 3; i++){
-        value = calloc(3, sizeof(int) + 1);
+        value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
             value[j] = matrix1[i][j] + matrix2[i][j];
         }
@@ -21,7 +21,7 @@ int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
     int** rows = malloc(3*sizeof(value));
     printf("subtracting matricies\n");
     for(int i = 0; i < 3; i++){
-        value = calloc(3, sizeof(int) + 1);
+        value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
             value[j] = matrix1[i][j] - matrix2[i][j];
         }
@@ -32,11 +32,16 @@ int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
 int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
     int* value = calloc(3, sizeof(int));
     int** rows = malloc(3*sizeof(value));
-    printf("subtracting matricies\n");
+    printf("multiplying matricies\n");
     for(int i = 0; i < 3; i++){
-        value = calloc(3, sizeof(int) + 1);
+        value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
-            value[j] = matrix1[i][j] - matrix2[i][j];
+            int temp = 0;
+            for(int k = 0; k < 3; k++){
+                temp += matrix1[i][k]*matrix2[k][j];
+            }
+            value[j] = temp;
+            
         }
         rows[i] = value;
     }
