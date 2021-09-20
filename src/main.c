@@ -15,5 +15,7 @@ int main(int argc, char const *argv[])
     print_matrix(matrix_result);
     matrix_result = mul_matrix(matrix,matrix2);
     print_matrix(matrix_result);
+    matrix_result = mod_matrix(matrix,2);
+    print_matrix(matrix_result);
     return 0;
 }

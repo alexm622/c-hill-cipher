@@ -47,6 +47,21 @@ int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
     }
     return rows;
 }
+int ** mod_matrix(int matrix[3][3], int mod){
+    int* value = calloc(3, sizeof(int));
+    int** rows = malloc(3*sizeof(value));
+    printf("modulus of matricies\n");
+    for(int i = 0; i < 3; i++){
+        value = calloc(3, sizeof(int));
+        for(int j = 0; j < 3; j++){
+            
+            value[j] = matrix[i][j]%mod;
+            
+        }
+        rows[i] = value;
+    }
+    return rows;
+}
 
 //take a 3x3 matrix as input
 void print_matrix(int ** matrix){
