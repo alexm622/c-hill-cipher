@@ -12,14 +12,15 @@ DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = main.o matrix.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-debug: CFLAGS += -DDEBUG -g
-debug: hill-cipher
+
 
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 hill-cipher: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+debug: CFLAGS += -DDEBUG -g
+debug: hill-cipher
 
 .PHONY: clean
 
