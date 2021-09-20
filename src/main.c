@@ -11,5 +11,7 @@ int main(int argc, char const *argv[])
     matrix_result = add_matrix(matrix, matrix2);
     printf("matricies added\n");
     print_matrix(matrix_result);
+    matrix_result = sub_matrix(matrix,matrix2);
+    print_matrix(matrix_result);
     return 0;
 }

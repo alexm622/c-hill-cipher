@@ -9,7 +9,7 @@
       "stopAtEntry": false,
       "cwd": "/home/alex/git/c-hill-cipher",
       "environment": [],
-      "program": "/home/alex/git/c-hill-cipher/build/Debug/outDebug",
+      "program": "/home/alex/git/c-hill-cipher/hill-cipher",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
