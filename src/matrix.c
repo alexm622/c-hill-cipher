@@ -101,7 +101,7 @@ int ** mod_matrix(int matrix[3][3], int mod){
 }
 
 /**
- * @brief print the matrix (3x3)
+ * @brief print the matrix (3x3) ints
  * 
  * @param matrix 
  */
@@ -112,6 +112,24 @@ void print_matrix(int ** matrix){
         printf("{");
         for(int j = 0; j < 3; j++){
             printf("%i,", matrix[i][j]);
+        }
+        printf("}\n");
+    }
+    printf("}\n");
+}
+
+/**
+ * @brief print the matrix (3x3) floats
+ * 
+ * @param matrix 
+ */
+
+void print_matrix_f(float ** matrix){
+    printf("{");
+    for(int i = 0; i < 3; i++){
+        printf("{");
+        for(int j = 0; j < 3; j++){
+            printf("%f,", matrix[i][j]);
         }
         printf("}\n");
     }
@@ -138,36 +156,31 @@ float ** invert_matrix(int matrix[3][3]){
     }
     int determinant = get_determinant(matrix);
     if(determinant == 0){
-        return value;
+        return rows;
     }
     for(int i =0; i < 3; i++){
         for(int j = 0; j < 3; j++){
-
+            int temp = matrix[i][j];
+            rows[i][j] = temp;
         }
     }
+    print_matrix_f(rows);
 
     
 }
-// TODO(Me) rewrite this to be mathematically correct
-//https://www.wikihow.com/Find-the-Determinant-of-a-3X3-Matrix
 /**
- * @brief Get the determinant of a 3x3 matrix
+ * @brief Get the determinant of a 3x3 matrix using triangles rule
  * 
  * @param matrix 
  * @return int 
  */
 int get_determinant(int matrix[3][3]){
-    int determinant = -1;
+    int result = 0;
     for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 3; j++){
-            if(IDENTITY_MATRIX[i][j] == 0){
-                if(i == 0 & j==0){
-                    determinant = matrix[i][j];
-                }else{
-                    determinant *= matrix[i][j];
-                }
-            }
-        }
+        result += matrix[0][0+i]*matrix[1][(1+i)%3]*matrix[2][(2+i)%3];
     }
-    return determinant;
+    for(int i = 0; i < 3; i++){
+        result -= matrix[0][(2+i)%3]*matrix[1][(1+i)%3]*matrix[2][(0+i)%3];
+    }
+    return result;
 }

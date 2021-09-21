@@ -17,5 +17,12 @@ int main(int argc, char const *argv[])
     print_matrix(matrix_result);
     matrix_result = mod_matrix(matrix,2);
     print_matrix(matrix_result);
+    int determinant = get_determinant(matrix);
+    printf("the determinant is %i \n", determinant);
+    float * temp = calloc(3,sizeof(float));
+    float ** inverted = malloc(3*sizeof(temp));
+    free(temp);
+    inverted = invert_matrix(matrix);
+    print_matrix_f(inverted);
     return 0;
 }
