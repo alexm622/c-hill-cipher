@@ -134,8 +134,6 @@ void print_matrix_f(float ** matrix){
     }
     printf("}\n");
 }
-
-// TODO(Alex) clean this up
 /**
  * @brief Invert a 3x3 matrix
  * 
