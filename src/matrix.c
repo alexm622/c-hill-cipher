@@ -105,8 +105,7 @@ int ** mod_matrix(int matrix[3][3], int mod){
  * 
  * @param matrix 
  */
-
-void print_matrix(int matrix[3][3]){
+void print_matrix(int ** matrix){
     printf("{");
     for(int i = 0; i < 3; i++){
         printf("{");
@@ -136,8 +135,7 @@ void print_matrix_f(float ** matrix){
     printf("}\n");
 }
 
-//https://www.wikihow.com/Find-the-Inverse-of-a-3x3-Matrix
-// TODO(Alex) finish this
+// TODO(Alex) clean this up
 /**
  * @brief Invert a 3x3 matrix
  * 
@@ -165,7 +163,6 @@ float ** invert_matrix(int matrix[3][3]){
             rows[i][j] = temp;
         }
     }
-    print_matrix_f(rows);
     int temp_matrix[3][3];
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 3; j++){
@@ -173,11 +170,8 @@ float ** invert_matrix(int matrix[3][3]){
             temp_matrix[j][i] = matrix[(1+i)%3][(1+j)%3]*matrix[(2+i)%3][(2+j)%3] - matrix[(2+i)%3][(1+j)%3]*matrix[(1+i)%3][(2+j)%3];
         }
     }
-    print_matrix(temp_matrix);
     rows = divide_matrix(temp_matrix, determinant);
     return rows;
-
-    
 }
 /**
  * @brief Get the determinant of a 3x3 matrix using triangles rule
@@ -196,6 +190,13 @@ int get_determinant(int matrix[3][3]){
     return result;
 }
 
+/**
+ * @brief divide a matrix by the div, returns a float value
+ * 
+ * @param matrix 
+ * @param div 
+ * @return float** 
+ */
 float ** divide_matrix(int matrix[3][3], float div){
     float* value;
     float** rows = malloc(3*sizeof(value));

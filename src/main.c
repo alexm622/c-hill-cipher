@@ -23,6 +23,7 @@ int main(int argc, char const *argv[])
     float ** inverted = malloc(3*sizeof(temp));
     free(temp);
     inverted = invert_matrix(matrix);
+    printf("inverted matrix\n");
     print_matrix_f(inverted);
     return 0;
 }
