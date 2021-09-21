@@ -19,7 +19,7 @@ const int IDENTITY_MATRIX[3][3]={
  * @return int** 
  */
 int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
-    int* value = calloc(3, sizeof(int));
+    int* value;
     int** rows = malloc(3*sizeof(value));
     printf("adding matricies\n");
     for(int i = 0; i < 3; i++){
@@ -40,7 +40,7 @@ int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @return int** 
  */
 int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
-    int* value = calloc(3, sizeof(int));
+    int* value;
     int** rows = malloc(3*sizeof(value));
     printf("subtracting matricies\n");
     for(int i = 0; i < 3; i++){
@@ -60,7 +60,7 @@ int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @return int** 
  */
 int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
-    int* value = calloc(3, sizeof(int));
+    int* value;
     int** rows = malloc(3*sizeof(value));
     printf("multiplying matricies\n");
     for(int i = 0; i < 3; i++){
@@ -85,7 +85,7 @@ int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @return int** 
  */
 int ** mod_matrix(int matrix[3][3], int mod){
-    int* value = calloc(3, sizeof(int));
+    int* value;
     int** rows = malloc(3*sizeof(value));
     printf("modulus of matricies\n");
     for(int i = 0; i < 3; i++){
@@ -106,7 +106,7 @@ int ** mod_matrix(int matrix[3][3], int mod){
  * @param matrix 
  */
 
-void print_matrix(int ** matrix){
+void print_matrix(int matrix[3][3]){
     printf("{");
     for(int i = 0; i < 3; i++){
         printf("{");
@@ -135,16 +135,17 @@ void print_matrix_f(float ** matrix){
     }
     printf("}\n");
 }
+
+//https://www.wikihow.com/Find-the-Inverse-of-a-3x3-Matrix
+// TODO(Alex) finish this
 /**
  * @brief Invert a 3x3 matrix
  * 
  * @param matrix 
- * @return int** 
+ * @return float** 
  */
-//https://www.wikihow.com/Find-the-Inverse-of-a-3x3-Matrix
-// TODO(Alex) finish this
 float ** invert_matrix(int matrix[3][3]){
-    float* value = calloc(3, sizeof(float));
+    float* value;
     float** rows = malloc(3*sizeof(value));
     // initialize the array
     for(int i = 0; i < 3; i++){
@@ -160,11 +161,20 @@ float ** invert_matrix(int matrix[3][3]){
     }
     for(int i =0; i < 3; i++){
         for(int j = 0; j < 3; j++){
-            int temp = matrix[i][j];
+            int temp = matrix[j][i];
             rows[i][j] = temp;
         }
     }
     print_matrix_f(rows);
+    int temp_matrix[3][3];
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            //ad-bc
+            temp_matrix[j][i] = matrix[(1+i)%3][(1+j)%3]*matrix[(2+i)%3][(2+j)%3] - matrix[(2+i)%3][(1+j)%3]*matrix[(1+i)%3][(2+j)%3];
+        }
+    }
+    print_matrix(temp_matrix);
+    return rows;
 
     
 }
@@ -183,4 +193,17 @@ int get_determinant(int matrix[3][3]){
         result -= matrix[0][(2+i)%3]*matrix[1][(1+i)%3]*matrix[2][(0+i)%3];
     }
     return result;
+}
+
+float ** divide_matrix(int matrix[3][3], float div){
+    float* value;
+    float** rows = malloc(3*sizeof(value));
+    for(int i = 0; i < 3; i++){
+        value = calloc(3, sizeof(float));
+        for(int j = 0; j < 3; j++){
+            value[j]= (float)matrix[i][j]/div;
+        }
+        rows[i] = value;
+    }
+    return rows;
 }
