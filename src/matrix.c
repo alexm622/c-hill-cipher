@@ -2,6 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 /**
+ * @brief identity matrix constant
+ * 
+ */
+const int IDENTITY_MATRIX[3][3]={
+    {1,0,0},
+    {0,1,0},
+    {0,0,1}
+};
+
+/**
  * @brief Take two 3x3 matricies and add them
  * 
  * @param matrix1 
@@ -95,6 +105,7 @@ int ** mod_matrix(int matrix[3][3], int mod){
  * 
  * @param matrix 
  */
+
 void print_matrix(int ** matrix){
     printf("{");
     for(int i = 0; i < 3; i++){
@@ -105,4 +116,58 @@ void print_matrix(int ** matrix){
         printf("}\n");
     }
     printf("}\n");
+}
+/**
+ * @brief Invert a 3x3 matrix
+ * 
+ * @param matrix 
+ * @return int** 
+ */
+//https://www.wikihow.com/Find-the-Inverse-of-a-3x3-Matrix
+// TODO(Alex) finish this
+float ** invert_matrix(int matrix[3][3]){
+    float* value = calloc(3, sizeof(float));
+    float** rows = malloc(3*sizeof(value));
+    // initialize the array
+    for(int i = 0; i < 3; i++){
+        value = calloc(3, sizeof(int));
+        for(int j = 0; j < 3; j++){
+            value[j] = 0;
+        }
+        rows[i] = value;
+    }
+    int determinant = get_determinant(matrix);
+    if(determinant == 0){
+        return value;
+    }
+    for(int i =0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+
+        }
+    }
+
+    
+}
+// TODO(Me) rewrite this to be mathematically correct
+//https://www.wikihow.com/Find-the-Determinant-of-a-3X3-Matrix
+/**
+ * @brief Get the determinant of a 3x3 matrix
+ * 
+ * @param matrix 
+ * @return int 
+ */
+int get_determinant(int matrix[3][3]){
+    int determinant = -1;
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 3; j++){
+            if(IDENTITY_MATRIX[i][j] == 0){
+                if(i == 0 & j==0){
+                    determinant = matrix[i][j];
+                }else{
+                    determinant *= matrix[i][j];
+                }
+            }
+        }
+    }
+    return determinant;
 }
