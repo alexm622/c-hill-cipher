@@ -4,7 +4,7 @@
 
 int main(int argc, char const *argv[])
 {
-    int matrix[3][3] = { {1, 2, 3}, {0, 1, 4}, {5, 6, 0} };
+    int matrix[3][3] = { {1, 2, 3}, {0, 1, 4}, {5, 6, 4} };
     int matrix2[3][3] = { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
 
     int ** matrix_result = malloc(sizeof(matrix));

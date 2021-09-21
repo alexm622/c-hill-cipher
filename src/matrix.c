@@ -174,6 +174,7 @@ float ** invert_matrix(int matrix[3][3]){
         }
     }
     print_matrix(temp_matrix);
+    rows = divide_matrix(temp_matrix, determinant);
     return rows;
 
     
