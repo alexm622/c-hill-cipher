@@ -3,9 +3,16 @@
 #include <stdio.h>
 
 #include <cipher.h>
-
-const char* charset = "abcdefghijklmnopqrstuvwxyz1234567890";
-const int charset_size = 36;
+/**
+ * @brief the charset for encoding/decoding
+ * 
+ */
+const char* CHARSET = "abcdefghijklmnopqrstuvwxyz1234567890";
+/**
+ * @brief the size of the charset
+ * 
+ */
+const int CHARSET_SIZE = 36;
 /**
  * @brief find the index of char c in array given c, the array, and the lenght of the array.
  * indexing starts at 0, returns -1 if not exist
@@ -16,15 +23,20 @@ const int charset_size = 36;
  * @return int 
  */
 int findIndexOf(char c){
-    int arraysize = charset_size;
+    int arraysize = CHARSET_SIZE;
     for(int i = 0; i < arraysize; i++){
-        if(c == charset[i]){
+        if(c == CHARSET[i]){
             return i;
         }
     }
     return -1;
 }
-
+/**
+ * @brief encode a charstring to a string of integers
+ * 
+ * @param charstring 
+ * @return int* 
+ */
 int* encode(char* charstring){
     int* integer_array;
     int charstring_len = charStringSize(charstring);
@@ -37,15 +49,28 @@ int* encode(char* charstring){
     }
     return integer_array;
 }
+/**
+ * @brief decode an array of integers into a chararray
+ * 
+ * @param intArray 
+ * @param arraySize 
+ * @return char* 
+ */
 char* decode(int* intArray, int arraySize){
     char* char_array;
     char_array = malloc(arraySize*sizeof(int));
     for(int i = 0; i < arraySize; i++){
-        char_array[i] = charset[intArray[i]-1];
+        char_array[i] = CHARSET[intArray[i]-1];
     }
     return char_array;
 }
 
+/**
+ * @brief get the size of a charstring
+ * 
+ * @param charstring 
+ * @return int 
+ */
 int charStringSize(char* charstring){
     bool counting;
     int size=0;
