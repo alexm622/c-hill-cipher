@@ -1,84 +1,65 @@
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
+#include <string.h>
 
 #include <cipher.h>
-/**
- * @brief the charset for encoding/decoding
- * 
- */
-const char* CHARSET = "abcdefghijklmnopqrstuvwxyz1234567890";
-/**
- * @brief the size of the charset
- * 
- */
-const int CHARSET_SIZE = 36;
-/**
- * @brief find the index of char c in array given c, the array, and the lenght of the array.
- * indexing starts at 0, returns -1 if not exist
- * 
- * @param c 
- * @param array 
- * @param arraysize 
- * @return int 
- */
-int findIndexOf(char c){
-    int arraysize = CHARSET_SIZE;
-    for(int i = 0; i < arraysize; i++){
-        if(c == CHARSET[i]){
-            return i;
-        }
-    }
-    return -1;
-}
-/**
- * @brief encode a charstring to a string of integers
- * 
- * @param charstring 
- * @return int* 
- */
-int* encode(char* charstring){
-    int* integer_array;
-    int charstring_len = charStringSize(charstring);
-    integer_array = malloc(charstring_len*sizeof(int));
-    for(int i = 0; i < charstring_len; i++){
-        integer_array[i] = findIndexOf(charstring[i])+1;
-        if(integer_array[i] == -1){
-            printf("character: %c was not found\n",charstring[i]);
-        }
-    }
-    return integer_array;
-}
-/**
- * @brief decode an array of integers into a chararray
- * 
- * @param intArray 
- * @param arraySize 
- * @return char* 
- */
-char* decode(int* intArray, int arraySize){
-    char* char_array;
-    char_array = malloc(arraySize*sizeof(int));
-    for(int i = 0; i < arraySize; i++){
-        char_array[i] = CHARSET[intArray[i]-1];
-    }
-    return char_array;
-}
+#include <matrix.h>
+#include <encoding.h>
 
 /**
- * @brief get the size of a charstring
+ * @brief test to see if the key is valid (invertable) if not return false
  * 
- * @param charstring 
- * @return int 
+ * @param key 
+ * @return true 
+ * @return false 
  */
-int charStringSize(char* charstring){
-    bool counting;
-    int size=0;
-    while(counting){
-        if(charstring[size] == 0x00){
-            break;
-        }
-        size++;
+bool testKey(char* key){
+    int keyLen = charStringSize(key);
+    if(keyLen != 9){
+        return false;
     }
-    return size; 
+    int ** matrix = malloc(3*sizeof(int*));
+    matrix = keyToMatrix(key);
+    int det = get_determinant(matrix);
+    free(matrix);
+    if(det == 0){
+        return false;
+    }
+    return true;
+}
+/**
+ * @brief convert the cipher key to a 3x3 matrix assuming the key is 9 characters
+ * 
+ * @param key 
+ * @return int** 
+ */
+int ** keyToMatrix(char* key){
+    int * value;
+    int ** matrix = malloc(3*sizeof(int *));
+    int * encodedKey = encode(key);
+    for(int i = 0; i < 3; i++){
+        value = calloc(3, sizeof(int));
+        for(int j = 0; j < 3; j++){
+            value[j] = encodedKey[i*3+j];
+        }
+        matrix[i] = value;
+    }
+    free(encodedKey);
+    return matrix;
+}
+/**
+ * @brief pad a charstring so that its length [mod padding_modulus equals 0
+ * 
+ * @param chars 
+ * @param padding_modulus 
+ * @return char* 
+ */
+char* padChars(char* chars, int padding_modulus){
+    int size = charStringSize(chars);
+    int padto = size % padding_modulus;
+    char* out = chars;
+    while(padto > 0){
+        strcat(out," ");
+    }
+    return out;
 }

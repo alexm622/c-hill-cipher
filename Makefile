@@ -10,7 +10,7 @@ LIBS=-lm
 _DEPS = *.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o matrix.o cipher.o
+_OBJ = main.o matrix.o encoding.o cipher.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 

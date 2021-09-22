@@ -1,10 +1,7 @@
 #ifndef CIPHER_H
 #define CIPHER_H
-const char* CHARSET;
-const int CHARSET_SIZE;
-int findIndexOf(char c);
-int* encode(char* charstring);
-char* decode(int* intArray, int arraySize);
-int charStringSize(char* charstring);
-int intArraySize(int* intarray);
+#include <stdbool.h>
+bool testKey(char* key);
+int ** keyToMatrix(char* key);
+char* padChars(char* chars, int padding_modulus);
 #endif
