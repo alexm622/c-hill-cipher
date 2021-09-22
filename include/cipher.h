@@ -4,4 +4,5 @@
 bool testKey(char* key);
 int ** keyToMatrix(char* key);
 char* padChars(char* chars, int padding_modulus);
+int * text_to_matrix(char* text);
 #endif

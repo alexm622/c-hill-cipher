@@ -14,14 +14,14 @@
  * @return false 
  */
 bool testKey(char* key){
-    int keyLen = charStringSize(key);
+    int keyLen = strlen(key);
     if(keyLen != 9){
         return false;
     }
-    int ** matrix = malloc(3*sizeof(int*));
+    int ** matrix;
     matrix = keyToMatrix(key);
     int det = get_determinant(matrix);
-    free(matrix);
+    free_matrix(matrix, 3);
     if(det == 0){
         return false;
     }
@@ -38,7 +38,7 @@ int ** keyToMatrix(char* key){
     int ** matrix = malloc(3*sizeof(int *));
     int * encodedKey = encode(key);
     for(int i = 0; i < 3; i++){
-        value = calloc(3, sizeof(int));
+        value = malloc(3*sizeof(int));
         for(int j = 0; j < 3; j++){
             value[j] = encodedKey[i*3+j];
         }
@@ -55,11 +55,20 @@ int ** keyToMatrix(char* key){
  * @return char* 
  */
 char* padChars(char* chars, int padding_modulus){
-    int size = charStringSize(chars);
-    int padto = size % padding_modulus;
-    char* out = chars;
+    int size = strlen(chars);
+    int padto = padding_modulus - (size % padding_modulus);
+    char * temp = calloc(size+padto, sizeof(char));
+    strcat(temp, chars);
     while(padto > 0){
-        strcat(out," ");
+        strcat(temp,"a");
+        padto--;
     }
+    return temp;
+}
+
+int * text_to_matrix(char* text){
+    int size = strlen(text);
+    int * out;
+    out = encode(text);
     return out;
 }

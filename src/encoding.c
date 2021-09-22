@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include <encoding.h>
 /**
@@ -8,11 +9,7 @@
  * 
  */
 const char* CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
-/**
- * @brief the size of the charset
- * 
- */
-const int CHARSET_SIZE = 36;
+
 /**
  * @brief find the index of char c in array given c, the array, and the lenght of the array.
  * indexing starts at 0, returns -1 if not exist
@@ -23,7 +20,7 @@ const int CHARSET_SIZE = 36;
  * @return int 
  */
 int findIndexOf(char c){
-    int arraysize = CHARSET_SIZE;
+    int arraysize = strlen(CHARSET);
     for(int i = 0; i < arraysize; i++){
         if(c == CHARSET[i]){
             return i;
@@ -39,7 +36,7 @@ int findIndexOf(char c){
  */
 int* encode(char* charstring){
     int* integer_array;
-    int charstring_len = charStringSize(charstring);
+    int charstring_len = strlen(charstring);
     integer_array = malloc(charstring_len*sizeof(int));
     for(int i = 0; i < charstring_len; i++){
         integer_array[i] = findIndexOf(charstring[i])+1;
@@ -57,29 +54,12 @@ int* encode(char* charstring){
  * @param arraySize 
  * @return char* 
  */
-char* decode(int* intArray, int arraySize){
-    char* char_array;
-    char_array = malloc(arraySize*sizeof(int));
+char * decode(int* intArray, int arraySize){
+    char* char_array = malloc(arraySize*sizeof(char));
+    
     for(int i = 0; i < arraySize; i++){
         char_array[i] = CHARSET[intArray[i]-1];
     }
     return char_array;
 }
 
-/**
- * @brief get the size of a charstring
- * 
- * @param charstring 
- * @return int 
- */
-int charStringSize(char* charstring){
-    bool counting = true;
-    int size=0;
-    while(counting){
-        if(charstring[size] == 0x00){
-            break;
-        }
-        size++;
-    }
-    return size; 
-}

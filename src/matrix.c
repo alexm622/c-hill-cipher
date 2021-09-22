@@ -1,6 +1,7 @@
 #include <matrix.h>
 #include <stdio.h>
 #include <stdlib.h>
+
 /**
  * @brief identity matrix constant
  * 
@@ -18,10 +19,9 @@ const int IDENTITY_MATRIX[3][3]={
  * @param matrix2 
  * @return int** 
  */
-int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
+int ** add_matrix(int** matrix1, int** matrix2){
     int* value;
     int** rows = malloc(3*sizeof(value));
-    printf("adding matricies\n");
     for(int i = 0; i < 3; i++){
         value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
@@ -39,10 +39,9 @@ int ** add_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @param matrix2 
  * @return int** 
  */
-int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
+int ** sub_matrix(int** matrix1, int** matrix2){
     int* value;
     int** rows = malloc(3*sizeof(value));
-    printf("subtracting matricies\n");
     for(int i = 0; i < 3; i++){
         value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
@@ -59,10 +58,9 @@ int ** sub_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @param matrix2 
  * @return int** 
  */
-int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
+int ** mul_matrix(int** matrix1, int** matrix2){
     int* value;
-    int** rows = malloc(3*sizeof(value));
-    printf("multiplying matricies\n");
+    int** rows = calloc(3, sizeof(int*));
     for(int i = 0; i < 3; i++){
         value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
@@ -71,7 +69,6 @@ int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
                 temp += matrix1[i][k]*matrix2[k][j];
             }
             value[j] = temp;
-            
         }
         rows[i] = value;
     }
@@ -84,10 +81,9 @@ int ** mul_matrix(int matrix1[3][3], int matrix2[3][3]){
  * @param mod 
  * @return int** 
  */
-int ** mod_matrix(int matrix[3][3], int mod){
+int ** mod_matrix(int** matrix, int mod){
     int* value;
     int** rows = malloc(3*sizeof(value));
-    printf("modulus of matricies\n");
     for(int i = 0; i < 3; i++){
         value = calloc(3, sizeof(int));
         for(int j = 0; j < 3; j++){
@@ -140,7 +136,7 @@ void print_matrix_f(float ** matrix){
  * @param matrix 
  * @return float** 
  */
-float ** invert_matrix(int matrix[3][3]){
+float ** invert_matrix(int ** matrix){
     float* value;
     float** rows = malloc(3*sizeof(value));
     // initialize the array
@@ -177,7 +173,7 @@ float ** invert_matrix(int matrix[3][3]){
  * @param matrix 
  * @return int 
  */
-int get_determinant(int matrix[3][3]){
+int get_determinant(int ** matrix){
     int result = 0;
     for(int i = 0; i < 3; i++){
         result += matrix[0][0+i]*matrix[1][(1+i)%3]*matrix[2][(2+i)%3];
@@ -206,4 +202,75 @@ float ** divide_matrix(int matrix[3][3], float div){
         rows[i] = value;
     }
     return rows;
+}
+/**
+ * @brief free an integer matrix from memory that has size number elements
+ * 
+ * @param matrix 
+ * @param number_elements 
+ */
+void free_matrix(int ** matrix, int number_elements){
+    for(int i =0; i < number_elements; i++){
+        free(matrix[i]);
+    }
+    free(matrix);
+}
+/**
+ * @brief free a float matrix from memory that has size number_elements
+ * 
+ * @param matrix 
+ * @param number_elements 
+ */
+void free_matrix_f(float ** matrix, int number_elements){
+    for(int i =0; i < 3; i++){
+        free(matrix[i]);
+    }
+    free(matrix);
+}
+/**
+ * @brief converts a single 1d matrix to a 3d matrix of 3x3 matricies
+ * 
+ * @param matrix 
+ * @param len 
+ * @return MatrixList 
+ */
+MatrixList* to_3x3s(int * matrix, int len){
+    MatrixList* m;
+    if(len % 9 != 0 ){
+        printf("something went wrong, this matrix was not padded properly\n");
+        return m; //purposefully crash
+    }
+    
+    int submatricies = len/9;
+    int *** matricies = malloc(submatricies*sizeof(int**));
+    int ** sub_matrix;
+    int * row;
+    for(int i = 0; i < submatricies; i++){
+        sub_matrix = calloc(3, sizeof(int*));
+        for(int j = 0; j < 3; j++){
+            row = calloc(3, sizeof(int));
+            for(int k = 0; k < 3; k++){
+                row[k] = matrix[i*9+j*3+k];
+            }
+            sub_matrix[j] = row;
+        }
+        matricies[i] = sub_matrix;
+    }
+    m->matrix = matricies;
+    m->matrix_count = submatricies;
+    return m;
+}
+
+void freeMatrixList(MatrixList* ml){
+    int size = ml->matrix_count;
+    free3d(ml->matrix,size);
+    free(ml);
+
+}
+
+void free3d(int*** matrix, int size){
+    for(int i =0; i < size; i++){
+        free_matrix(matrix[i], 3);
+    }
+    free(matrix);
 }
