@@ -8,14 +8,16 @@
 #include <encoding.h>
 int main(int argc, char const *argv[])
 {
-    char * key = "abcdefg";
+    char * key = "abdfgsaaa";
     char * padded_key = padChars(key, 9);
     char* secret_message = "The quick brown fox jumps over the lazy dog";
-    printf("the secret_message is %s\n", secret_message);
-    printf("the encoding key is %s\n", key);
+    printf("the secret_message is %s.\n", secret_message);
+    printf("the encoding key is %s.\n", key);
     char * secret = encrypt(key, secret_message);
-    printf("the secret is:%s\n",secret);
+    printf("the secret is:%s.\n",secret);
     char* decoded = decrypt(secret,key);
+    printf("decoded message is %s.\n",decoded);
+    free(decoded);
     free(secret);
     free(padded_key);
 

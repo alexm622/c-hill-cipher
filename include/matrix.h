@@ -13,8 +13,8 @@ int ** add_matrix(int** matrix1, int** matrix2);
 int ** sub_matrix(int** matrix1, int** matrix2);
 int ** mul_matrix(int** matrix1, int** matrix2);
 int ** mod_matrix(int** matrix, int mod);
-float ** divide_matrix(int matrix[3][3], float div);
-float ** invert_matrix(int ** matrix);
+float ** divide_matrix(int** matrix, float div);
+int ** invert_matrix(int ** matrix);
 int get_determinant(int ** matrix);
 void print_matrix(int ** matrix);
 void print_matrix_f(float ** matrix);
@@ -23,4 +23,5 @@ void free_matrix_f(float ** matrix, int number_elements);
 MatrixList* to_3x3s(int * matrix, int len);
 void freeMatrixList(MatrixList* ml);
 void free3d(int*** matrix, int size);
+int getFinalMod(int determinant, int charset_size);
 #endif
