@@ -15,15 +15,9 @@ int main(int argc, char const *argv[])
     printf("the encoding key is %s\n", key);
     char * secret = encrypt(key, secret_message);
     printf("the secret is:%s\n",secret);
+    char* decoded = decrypt(secret,key);
     free(secret);
     free(padded_key);
-/*
-    char* charstr = "absdefghi";
-    int** as_matrix = keyToMatrix(charstr);
-    int** result = mul_matrix(as_matrix,as_matrix);
-    free_matrix(result, 3);
-    print_matrix(as_matrix);
-    free_matrix(as_matrix,3);*/
-    
+
     return 0;
 }

@@ -130,6 +130,7 @@ void print_matrix_f(float ** matrix){
     }
     printf("}\n");
 }
+//TODO this needs a rewrite to work better with the hill cipher
 /**
  * @brief Invert a 3x3 matrix
  * 
@@ -264,13 +265,22 @@ MatrixList* to_3x3s(int * matrix, int len){
     
     return m;
 }
-
+/**
+ * @brief free a MatrixList from memory
+ * 
+ * @param ml 
+ */
 void freeMatrixList(MatrixList* ml){
     int size = ml->matrix_count;
     printf("size is %i\n", size);
     free3d(ml->matrix,size);
 }
-
+/**
+ * @brief free a 3 dimensional array from memory
+ * 
+ * @param matrix 
+ * @param size 
+ */
 void free3d(int*** matrix, int size){
     for(int i =0; i < size; i++){
         free_matrix(matrix[i], 3);

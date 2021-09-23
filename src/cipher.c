@@ -68,14 +68,25 @@ char* padChars(char* chars, int padding_modulus){
     }
     return temp;
 }
-
+/**
+ * @brief convert the text to a 1d array
+ * 
+ * @param text 
+ * @return int* 
+ */
 int * text_to_matrix(char* text){
     int size = (int)strlen(text);
     int * out;
     out = encode(text);
     return out;
 }
-
+/**
+ * @brief take the key and message and return the encoded message
+ * 
+ * @param key 
+ * @param message 
+ * @return char* 
+ */
 char * encrypt(char* key, char* message){
     char * padded_key = padChars(key, 9);
     printf("padded key: %s\n",padded_key);
@@ -94,7 +105,7 @@ char * encrypt(char* key, char* message){
     int message_size = (int)strlen(padded_message);
     int * message_as_int = text_to_matrix(padded_message);
     
-    MatrixList* ml = to_3x3s(message_as_int, message_size); //this is failing
+    MatrixList* ml = to_3x3s(message_as_int, message_size); 
     free(padded_key);
     free(padded_message);
     free(message_as_int);
@@ -132,4 +143,40 @@ char * encrypt(char* key, char* message){
     free(ml);
     //char* secret = "test";
     return secret;
+}
+//TODO to write the decrypt function the find inverse needs a rewrite
+//https://www.jigsawacademy.com/blogs/cyber-security/hill-cipher/#Hill-Cipher-Decryption
+/**
+ * @brief take the message and the key and return the message
+ * 
+ * @param message 
+ * @param key 
+ * @return char* 
+ */
+char* decrypt(char* message, char* key){
+    char * padded_key = padChars(key, 9);
+    printf("padded key: %s\n",padded_key);
+    bool works = testKey(padded_key);
+    if(works){
+        printf("this key works\n");
+    }else{
+        printf("this key doesn't work\n");
+        free(padded_key);
+        return 0;
+    }
+    char* padded_message = padChars(message, 9);
+    int ** key_as_matrix = keyToMatrix(padded_key);
+    float ** inverted_key = invert_matrix(key_as_matrix);
+    print_matrix_f(inverted_key);
+    free_matrix_f(inverted_key, 3);
+   
+    
+    int message_size = (int)strlen(padded_message);
+    int * message_as_int = text_to_matrix(padded_message);
+    
+    MatrixList* ml = to_3x3s(message_as_int, message_size); 
+    free(padded_key);
+    free(padded_message);
+    free(message_as_int);
+    return 0;
 }
