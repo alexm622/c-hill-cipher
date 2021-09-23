@@ -20,7 +20,7 @@ const char* CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345
  * @return int 
  */
 int findIndexOf(char c){
-    int arraysize = strlen(CHARSET);
+    int arraysize = (int)strlen(CHARSET);
     for(int i = 0; i < arraysize; i++){
         if(c == CHARSET[i]){
             return i;
@@ -36,7 +36,7 @@ int findIndexOf(char c){
  */
 int* encode(char* charstring){
     int* integer_array;
-    int charstring_len = strlen(charstring);
+    int charstring_len = (int)strlen(charstring);
     integer_array = malloc(charstring_len*sizeof(int));
     for(int i = 0; i < charstring_len; i++){
         integer_array[i] = findIndexOf(charstring[i])+1;
@@ -55,7 +55,7 @@ int* encode(char* charstring){
  * @return char* 
  */
 char * decode(int* intArray, int arraySize){
-    char* char_array = calloc(arraySize, sizeof(char));
+    char* char_array = calloc(arraySize+1, sizeof(char));
     for(int i = 0; i < arraySize; i++){
         char_array[i] = CHARSET[intArray[i]-1];
     }

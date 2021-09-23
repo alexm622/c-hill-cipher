@@ -15,7 +15,7 @@
  * @return false 
  */
 bool testKey(char* key){
-    int keyLen = strlen(key);
+    int keyLen = (int)strlen(key);
     if(keyLen != 9){
         return false;
     }
@@ -59,7 +59,7 @@ int ** keyToMatrix(char* key){
 char* padChars(char* chars, int padding_modulus){
     int size = strlen(chars);
     int padto = padding_modulus - (size % padding_modulus);
-    char * temp = calloc(size+padto, sizeof(char));
+    char * temp = calloc(size+padto+1, sizeof(char));
     strcat(temp, chars);
     while(padto > 0){
         strcat(temp,"a");
@@ -69,7 +69,7 @@ char* padChars(char* chars, int padding_modulus){
 }
 
 int * text_to_matrix(char* text){
-    int size = strlen(text);
+    int size = (int)strlen(text);
     int * out;
     out = encode(text);
     return out;
@@ -90,7 +90,7 @@ char * encrypt(char* key, char* message){
     int ** key_as_matrix = keyToMatrix(padded_key);
    
     
-    int message_size = strlen(padded_message);
+    int message_size = (int)strlen(padded_message);
     int * message_as_int = text_to_matrix(padded_message);
     
     MatrixList* ml = to_3x3s(message_as_int, message_size); //this is failing
@@ -111,7 +111,7 @@ char * encrypt(char* key, char* message){
         result = mul_matrix(keymatrix, matrix);
         
         //print_matrix(result);
-        int ** result2 = mod_matrix(result, strlen(CHARSET));
+        int ** result2 = mod_matrix(result, (int)strlen(CHARSET));
         
         ml->matrix[i] = result2;
         free_matrix(matrix,3);
@@ -119,11 +119,11 @@ char * encrypt(char* key, char* message){
     }
     free_matrix(key_as_matrix, 3);
     
-    char * secret = calloc(matrix_count*9,sizeof(char));
+    char * secret = calloc(matrix_count*10,sizeof(char));
     for(int i = 0; i < matrix_count; i++){
         for(int j = 0; j < 3; j++){
             char* decoded = decode(ml->matrix[i][j], 3);
-            strcat(secret,decoded);
+            secret = strcat(secret,decoded);
             free(decoded);
         }
     }

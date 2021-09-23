@@ -235,7 +235,7 @@ void free_matrix_f(float ** matrix, int number_elements){
  * @return MatrixList 
  */
 MatrixList* to_3x3s(int * matrix, int len){
-    MatrixList* m = malloc(sizeof(MatrixList *));
+    MatrixList* m = calloc(1,sizeof(MatrixList *));
     if(len % 9 != 0 ){
         printf("something went wrong, this matrix was not padded properly\n");
         return m; //purposefully crash
@@ -270,7 +270,6 @@ void freeMatrixList(MatrixList* ml){
     int size = ml->matrix_count;
     printf("size is %i\n", size);
     free3d(ml->matrix,size);
-
 }
 
 void free3d(int*** matrix, int size){
