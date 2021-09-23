@@ -60,9 +60,9 @@ int ** sub_matrix(int** matrix1, int** matrix2){
  */
 int ** mul_matrix(int** matrix1, int** matrix2){
     int* value;
-    int** rows = calloc(3, sizeof(int*));
+    int** rows = malloc(3*sizeof(int*));
     for(int i = 0; i < 3; i++){
-        value = calloc(3, sizeof(int));
+        value = malloc(3*sizeof(int));
         for(int j = 0; j < 3; j++){
             int temp = 0;
             for(int k = 0; k < 3; k++){
@@ -235,20 +235,25 @@ void free_matrix_f(float ** matrix, int number_elements){
  * @return MatrixList 
  */
 MatrixList* to_3x3s(int * matrix, int len){
-    MatrixList* m;
+    MatrixList* m = malloc(sizeof(MatrixList *));
     if(len % 9 != 0 ){
         printf("something went wrong, this matrix was not padded properly\n");
         return m; //purposefully crash
     }
     
+    
+    
     int submatricies = len/9;
-    int *** matricies = malloc(submatricies*sizeof(int**));
+    
+    printf("creating %i submatricies\n",submatricies);
+    m->matrix_count = submatricies;
+    int *** matricies = calloc(submatricies, sizeof(int**));
     int ** sub_matrix;
     int * row;
     for(int i = 0; i < submatricies; i++){
-        sub_matrix = calloc(3, sizeof(int*));
+        sub_matrix = malloc(3*sizeof(int*));
         for(int j = 0; j < 3; j++){
-            row = calloc(3, sizeof(int));
+            row = malloc(3*sizeof(int));
             for(int k = 0; k < 3; k++){
                 row[k] = matrix[i*9+j*3+k];
             }
@@ -257,14 +262,14 @@ MatrixList* to_3x3s(int * matrix, int len){
         matricies[i] = sub_matrix;
     }
     m->matrix = matricies;
-    m->matrix_count = submatricies;
+    
     return m;
 }
 
 void freeMatrixList(MatrixList* ml){
     int size = ml->matrix_count;
+    printf("size is %i\n", size);
     free3d(ml->matrix,size);
-    free(ml);
 
 }
 

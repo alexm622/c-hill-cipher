@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <cipher.h>
 #include <matrix.h>
@@ -44,6 +45,7 @@ int ** keyToMatrix(char* key){
         }
         matrix[i] = value;
     }
+    
     free(encodedKey);
     return matrix;
 }
@@ -71,4 +73,62 @@ int * text_to_matrix(char* text){
     int * out;
     out = encode(text);
     return out;
+}
+
+char * encrypt(char* key, char* message){
+    char * padded_key = padChars(key, 9);
+    printf("padded key: %s\n",padded_key);
+    bool works = testKey(padded_key);
+    if(works){
+        printf("this key works\n");
+    }else{
+        printf("this key doesn't work\n");
+        free(padded_key);
+        return 0;
+    }
+    char* padded_message = padChars(message, 9);
+    int ** key_as_matrix = keyToMatrix(padded_key);
+   
+    
+    int message_size = strlen(padded_message);
+    int * message_as_int = text_to_matrix(padded_message);
+    
+    MatrixList* ml = to_3x3s(message_as_int, message_size); //this is failing
+    free(padded_key);
+    free(padded_message);
+    free(message_as_int);
+    
+    
+    int ** matrix;
+    int ** keymatrix;
+    int ** result;
+    int matrix_count = ml->matrix_count;
+    for(int i = 0; i < matrix_count; i++){
+        matrix = ml->matrix[i];
+        keymatrix = key_as_matrix;
+        //print_matrix(matrix);
+        //print_matrix(keymatrix);
+        result = mul_matrix(keymatrix, matrix);
+        
+        //print_matrix(result);
+        int ** result2 = mod_matrix(result, strlen(CHARSET));
+        
+        ml->matrix[i] = result2;
+        free_matrix(matrix,3);
+        free_matrix(result, 3);
+    }
+    free_matrix(key_as_matrix, 3);
+    
+    char * secret = calloc(matrix_count*9,sizeof(char));
+    for(int i = 0; i < matrix_count; i++){
+        for(int j = 0; j < 3; j++){
+            char* decoded = decode(ml->matrix[i][j], 3);
+            strcat(secret,decoded);
+            free(decoded);
+        }
+    }
+    freeMatrixList(ml);
+    free(ml);
+    //char* secret = "test";
+    return secret;
 }

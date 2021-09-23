@@ -55,8 +55,7 @@ int* encode(char* charstring){
  * @return char* 
  */
 char * decode(int* intArray, int arraySize){
-    char* char_array = malloc(arraySize*sizeof(char));
-    
+    char* char_array = calloc(arraySize, sizeof(char));
     for(int i = 0; i < arraySize; i++){
         char_array[i] = CHARSET[intArray[i]-1];
     }
