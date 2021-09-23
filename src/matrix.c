@@ -235,17 +235,16 @@ void free_matrix_f(float ** matrix, int number_elements){
  * @return MatrixList 
  */
 MatrixList* to_3x3s(int * matrix, int len){
-    MatrixList* m = calloc(1,sizeof(MatrixList *));
+    
     if(len % 9 != 0 ){
         printf("something went wrong, this matrix was not padded properly\n");
-        return m; //purposefully crash
+        return NULL; //purposefully crash
     }
     
+    MatrixList* m = calloc(2,sizeof(MatrixList *));
     
-    
-    int submatricies = len/9;
-    
-    printf("creating %i submatricies\n",submatricies);
+    long submatricies = len/9;
+    printf("creating %li submatricies\n",submatricies);
     m->matrix_count = submatricies;
     int *** matricies = calloc(submatricies, sizeof(int**));
     int ** sub_matrix;

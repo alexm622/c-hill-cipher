@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include <cipher.h>
 #include <matrix.h>
@@ -102,7 +103,7 @@ char * encrypt(char* key, char* message){
     int ** matrix;
     int ** keymatrix;
     int ** result;
-    int matrix_count = ml->matrix_count;
+    long matrix_count = ml->matrix_count;
     for(int i = 0; i < matrix_count; i++){
         matrix = ml->matrix[i];
         keymatrix = key_as_matrix;
