@@ -8,7 +8,7 @@
  * @brief the charset for encoding/decoding
  * 
  */
-const char* CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ";
+const char* CHARSET = "abcdefghijklmnopqrstuvwxyz";
 
 /**
  * @brief find the index of char c in array given c, the array, and the lenght of the array.
@@ -20,9 +20,9 @@ const char* CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ12345
  * @return int 
  */
 int findIndexOf(char c){
-    int arraysize = (int)strlen(CHARSET);
+    int arraysize = (int)strlen(CHARSET) - 1;
     for(int i = 0; i < arraysize; i++){
-        if(c == CHARSET[i]){
+        if(c == CHARSET[i +1]){
             return i;
         }
     }

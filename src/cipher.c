@@ -110,6 +110,9 @@ char * encrypt(char* key, char* message){
     free(padded_message);
     free(message_as_int);
     
+    printf("key as matrix: ");
+    print_matrix(key_as_matrix);
+
     
     int ** matrix;
     int ** keymatrix;
@@ -117,13 +120,14 @@ char * encrypt(char* key, char* message){
     long matrix_count = ml->matrix_count;
     for(int i = 0; i < matrix_count; i++){
         matrix = ml->matrix[i];
+        print_matrix(matrix);
         keymatrix = key_as_matrix;
         //print_matrix(matrix);
         //print_matrix(keymatrix);
         result = mul_matrix(keymatrix, matrix);
         
         //print_matrix(result);
-        int ** result2 = mod_matrix(result, (int)strlen(CHARSET));
+        int ** result2 = mod_matrix(result, (int)strlen(CHARSET)-1);
         
         ml->matrix[i] = result2;
         free_matrix(matrix,3);
@@ -167,15 +171,16 @@ char* decrypt(char* message, char* key){
     char* padded_message = padChars(message, 9);
     int ** key_as_matrix = keyToMatrix(padded_key);
     int ** inverted_key = invert_matrix(key_as_matrix);
-    print_matrix(inverted_key);
     free_matrix(key_as_matrix,3);
     
    
-    
+    //get the message size and 
     int message_size = (int)strlen(padded_message);
     int * message_as_int = text_to_matrix(padded_message);
     
     MatrixList* ml = to_3x3s(message_as_int, message_size); 
+
+    //initialize the variables needed for multiplying the matrix by the inverse matrix
     int ** matrix;
     int ** keymatrix;
     int ** result;
@@ -183,19 +188,26 @@ char* decrypt(char* message, char* key){
     for(int i = 0; i < matrix_count; i++){
         matrix = ml->matrix[i];
         keymatrix = inverted_key;
-        print_matrix(matrix);
-        print_matrix(keymatrix);
+
+        //multiply the inverted modular multiplicative inverse matrix and a 3x3 matrix piece of the message
         result = mul_matrix(keymatrix, matrix);
+
+        //do result mod (length of CHARSET)
+        int ** result2 = mod_matrix(result, (int)strlen(CHARSET)-1);
         
-        //print_matrix(result);
-        int ** result2 = mod_matrix(result, (int)strlen(CHARSET));
-        
+        //replace the original matrix with the new matrix
         ml->matrix[i] = result2;
+
+        //free the memory occupied by the leftover matricies
         free_matrix(matrix,3);
         free_matrix(result, 3);
     }
+    //free the space allocated to the inverted matrix
     free_matrix(inverted_key, 3);
+
+    //calloc memory used to store the result
     char * secret = calloc(matrix_count*9+1,sizeof(char));
+    //loop through the matrix, decode the int into a char and write to the string
     for(int i = 0; i < matrix_count; i++){
         for(int j = 0; j < 3; j++){
             char* decoded = decode(ml->matrix[i][j], 3);
@@ -203,10 +215,13 @@ char* decrypt(char* message, char* key){
             free(decoded);
         }
     }
+    //free the space allocated by the 3d array and 
     freeMatrixList(ml);
     free(ml);
     free(padded_key);
     free(padded_message);
     free(message_as_int);
+
+    //return the secret message
     return secret;
 }

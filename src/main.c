@@ -8,9 +8,9 @@
 #include <encoding.h>
 int main(int argc, char const *argv[])
 {
-    char * key = "abdfgsaaa";
+    char * key = "backupabc";
     char * padded_key = padChars(key, 9);
-    char* secret_message = "The quick brown fox jumps over the lazy dog";
+    char* secret_message = "retreatnowxx";
     printf("the secret_message is %s.\n", secret_message);
     printf("the encoding key is %s.\n", key);
     char * secret = encrypt(key, secret_message);

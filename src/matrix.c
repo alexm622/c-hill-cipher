@@ -84,7 +84,6 @@ int ** mul_matrix(int** matrix1, int** matrix2){
  * @return int** 
  */
 int ** mod_matrix(int** matrix, int mod){
-    printf("mod is %i\n", mod);
     int* value;
     int** rows = malloc(3*sizeof(value));
     for(int i = 0; i < 3; i++){
@@ -181,10 +180,10 @@ int ** invert_matrix(int ** matrix){
     }
     
     //get the modulus of the matrix
-    int** modded_matrix = mod_matrix(temp_matrix, strlen(CHARSET));
+    int** modded_matrix = mod_matrix(temp_matrix, strlen(CHARSET)-1);
 
     //get the final mod
-    int final_mod = getFinalMod(determinant, strlen(CHARSET));
+    int final_mod = getFinalMod(determinant, strlen(CHARSET) -1);
 
     free_matrix(rows,3);
     rows = modded_matrix;
@@ -192,7 +191,7 @@ int ** invert_matrix(int ** matrix){
     for(int i = 0; i < 3; i++){
         for(int j = 0; j<3; j++){
             int temp = rows[i][j]*final_mod;
-            temp %= strlen(CHARSET);
+            temp %= strlen(CHARSET)-1;
             rows[i][j] = temp;
         }
     }
