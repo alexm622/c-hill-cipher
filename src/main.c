@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 {
     char * key = "backupabc";
     char * padded_key = padChars(key, 9);
-    char* secret_message = "retreatnowxx";
+    char* secret_message = "retreatnow";
     printf("the secret_message is %s.\n", secret_message);
     printf("the encoding key is %s.\n", key);
     char * secret = encrypt(key, secret_message);

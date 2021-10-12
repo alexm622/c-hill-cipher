@@ -77,6 +77,25 @@ int ** mul_matrix(int** matrix1, int** matrix2){
     return rows;
 }
 /**
+ * @brief take two 3x3 matricies and multiply them
+ * 
+ * @param matrix1 
+ * @param matrix2 
+ * @return int* 
+ */
+int * mul_matrix_3x1(int* matrix1, int** matrix2){
+    int* value = calloc(3,sizeof(int));
+    
+    for(int i = 0; i < 3; i++){
+        int temp = 0;
+        for(int j = 0; j < 3; j++){
+            temp += matrix2[i][j]*matrix1[j];
+        }
+        value[i] = temp;
+    }
+    return value;
+}
+/**
  * @brief take a matrix and mod by the mod
  * 
  * @param matrix 
@@ -99,6 +118,26 @@ int ** mod_matrix(int** matrix, int mod){
         rows[i] = value;
     }
     return rows;
+}
+
+/**
+ * @brief take a matrix and mod by the mod
+ * 
+ * @param matrix 
+ * @param mod 
+ * @return int* 
+ */
+int * mod_matrix_3x1(int* matrix, int mod){
+    int* value = calloc(3,sizeof(int));
+    for(int i = 0; i < 3; i++){
+        int modded = matrix[i];
+        while(modded<0){
+            modded +=mod;
+        }
+        value[i] += modded%mod;
+    
+    }
+    return value;
 }
 
 /**
@@ -132,6 +171,18 @@ void print_matrix_f(float ** matrix){
             printf("%f,", matrix[i][j]);
         }
         printf("}\n");
+    }
+    printf("}\n");
+}
+/**
+ * @brief print the matrix (3x1) ints
+ * 
+ * @param matrix 
+ */
+void print_matrix_3x1(int * matrix){
+    printf("{");
+    for(int i = 0; i < 3; i++){
+        printf("%i,", matrix[i]);
     }
     printf("}\n");
 }
@@ -180,24 +231,34 @@ int ** invert_matrix(int ** matrix){
     }
     
     //get the modulus of the matrix
-    int** modded_matrix = mod_matrix(temp_matrix, strlen(CHARSET)-1);
+    int** modded_matrix = mod_matrix(temp_matrix, strlen(CHARSET));
+
+    
 
     //get the final mod
-    int final_mod = getFinalMod(determinant, strlen(CHARSET) -1);
+    int final_mod = getFinalMod(determinant, strlen(CHARSET));
 
     free_matrix(rows,3);
     rows = modded_matrix;
+    int** new_matrix = malloc(3*sizeof(int*));
+
+    //fill the new matrix with zeros
+    for(int i = 0; i < 3; i++){
+        int * temp_row = calloc(3,sizeof(int));
+        new_matrix[i] = temp_row;
+    }
 
     for(int i = 0; i < 3; i++){
         for(int j = 0; j<3; j++){
             int temp = rows[i][j]*final_mod;
-            temp %= strlen(CHARSET)-1;
-            rows[i][j] = temp;
+            new_matrix[j][i] = temp;
         }
     }
 
     free_matrix(temp_matrix,3);
-    return rows;
+    free_matrix(rows, 3);
+    int ** modded = mod_matrix(new_matrix,strlen(CHARSET));
+    return modded;
 }
 /**
  * @brief Get the determinant of a 3x3 matrix using triangles rule
@@ -276,7 +337,6 @@ MatrixList* to_3x3s(int * matrix, int len){
     MatrixList* m = calloc(2,sizeof(MatrixList *));
     
     long submatricies = len/9;
-    printf("creating %li submatricies\n",submatricies);
     m->matrix_count = submatricies;
     int *** matricies = calloc(submatricies, sizeof(int**));
     int ** sub_matrix;
@@ -296,6 +356,7 @@ MatrixList* to_3x3s(int * matrix, int len){
     
     return m;
 }
+
 /**
  * @brief free a MatrixList from memory
  * 
@@ -303,7 +364,6 @@ MatrixList* to_3x3s(int * matrix, int len){
  */
 void freeMatrixList(MatrixList* ml){
     int size = ml->matrix_count;
-    printf("size is %i\n", size);
     free3d(ml->matrix,size);
 }
 /**
@@ -327,7 +387,6 @@ int getFinalMod(int determinant, int charset_size){
         new_mod += charset_size;
     }
     new_mod = new_mod%charset_size;
-    printf("new mod is %i\n",new_mod);
 
     //find the multiplicative inverse mod
     int final_mod;
@@ -335,8 +394,9 @@ int getFinalMod(int determinant, int charset_size){
         int temp = (new_mod*i)%charset_size;
         if(temp==1){
             final_mod = i;
+            //break out of the for loop
             i = 600;
         }
     }
-    printf("the final mod is %i\n", final_mod);
+    return final_mod;
 }

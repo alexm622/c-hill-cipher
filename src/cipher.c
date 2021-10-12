@@ -110,30 +110,29 @@ char * encrypt(char* key, char* message){
     free(padded_message);
     free(message_as_int);
     
-    printf("key as matrix: ");
-    print_matrix(key_as_matrix);
-
-    
     int ** matrix;
     int ** keymatrix;
-    int ** result;
+    int * result;
+    int * sub;
     long matrix_count = ml->matrix_count;
+    // this might need to be split even further...
     for(int i = 0; i < matrix_count; i++){
         matrix = ml->matrix[i];
-        print_matrix(matrix);
         keymatrix = key_as_matrix;
-        //print_matrix(matrix);
-        //print_matrix(keymatrix);
-        result = mul_matrix(keymatrix, matrix);
-        
-        //print_matrix(result);
-        int ** result2 = mod_matrix(result, (int)strlen(CHARSET)-1);
-        
-        ml->matrix[i] = result2;
-        free_matrix(matrix,3);
-        free_matrix(result, 3);
+        for(int j = 0; j < 3; j++){
+            sub = matrix[j];
+            
+            result = mul_matrix_3x1(sub, keymatrix);
+
+            int * result2 = mod_matrix_3x1(result, (int)strlen(CHARSET));
+            
+            matrix[j] = result2;
+            free(result);
+        }
+        ml->matrix[i] = matrix;
     }
     free_matrix(key_as_matrix, 3);
+    printf("finished encoding\n");
     
     char * secret = calloc(matrix_count*9+1,sizeof(char));
     for(int i = 0; i < matrix_count; i++){
@@ -183,24 +182,25 @@ char* decrypt(char* message, char* key){
     //initialize the variables needed for multiplying the matrix by the inverse matrix
     int ** matrix;
     int ** keymatrix;
-    int ** result;
+    int * result;
+    int * sub;
     long matrix_count = ml->matrix_count;
     for(int i = 0; i < matrix_count; i++){
         matrix = ml->matrix[i];
         keymatrix = inverted_key;
 
-        //multiply the inverted modular multiplicative inverse matrix and a 3x3 matrix piece of the message
-        result = mul_matrix(keymatrix, matrix);
+        for(int j = 0; j < 3; j++){
+            sub = matrix[j];
+            
 
-        //do result mod (length of CHARSET)
-        int ** result2 = mod_matrix(result, (int)strlen(CHARSET)-1);
-        
-        //replace the original matrix with the new matrix
-        ml->matrix[i] = result2;
+            result = mul_matrix_3x1(sub, keymatrix);
 
-        //free the memory occupied by the leftover matricies
-        free_matrix(matrix,3);
-        free_matrix(result, 3);
+            int * result2 = mod_matrix_3x1(result, (int)strlen(CHARSET));
+            
+            matrix[j] = result2;
+            free(result);
+        }
+        ml->matrix[i] = matrix;
     }
     //free the space allocated to the inverted matrix
     free_matrix(inverted_key, 3);

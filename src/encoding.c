@@ -8,7 +8,7 @@
  * @brief the charset for encoding/decoding
  * 
  */
-const char* CHARSET = "abcdefghijklmnopqrstuvwxyz";
+const char* CHARSET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 
 /**
  * @brief find the index of char c in array given c, the array, and the lenght of the array.
@@ -57,7 +57,7 @@ int* encode(char* charstring){
 char * decode(int* intArray, int arraySize){
     char* char_array = calloc(arraySize+1, sizeof(char));
     for(int i = 0; i < arraySize; i++){
-        char_array[i] = CHARSET[intArray[i]-1];
+        char_array[i] = CHARSET[intArray[i]];
     }
     return char_array;
 }
