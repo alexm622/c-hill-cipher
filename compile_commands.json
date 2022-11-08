@@ -1,0 +1,62 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Iinclude",
+      "-DDEBUG",
+      "-g",
+      "-c",
+      "-o",
+      "src/matrix.o",
+      "src/matrix.c"
+    ],
+    "directory": "/home/alex/git/c-hill-cipher",
+    "file": "/home/alex/git/c-hill-cipher/src/matrix.c",
+    "output": "/home/alex/git/c-hill-cipher/src/matrix.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Iinclude",
+      "-DDEBUG",
+      "-g",
+      "-c",
+      "-o",
+      "src/encoding.o",
+      "src/encoding.c"
+    ],
+    "directory": "/home/alex/git/c-hill-cipher",
+    "file": "/home/alex/git/c-hill-cipher/src/encoding.c",
+    "output": "/home/alex/git/c-hill-cipher/src/encoding.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Iinclude",
+      "-DDEBUG",
+      "-g",
+      "-c",
+      "-o",
+      "src/main.o",
+      "src/main.c"
+    ],
+    "directory": "/home/alex/git/c-hill-cipher",
+    "file": "/home/alex/git/c-hill-cipher/src/main.c",
+    "output": "/home/alex/git/c-hill-cipher/src/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-Iinclude",
+      "-DDEBUG",
+      "-g",
+      "-c",
+      "-o",
+      "src/cipher.o",
+      "src/cipher.c"
+    ],
+    "directory": "/home/alex/git/c-hill-cipher",
+    "file": "/home/alex/git/c-hill-cipher/src/cipher.c",
+    "output": "/home/alex/git/c-hill-cipher/src/cipher.o"
+  }
+]
